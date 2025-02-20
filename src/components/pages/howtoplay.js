@@ -1,11 +1,35 @@
 // src/HowToPlay.js
-import React from 'react';
-import { Link } from 'react-router-dom'; // Import Link for navigation
-import './HowToPlay.css'; // Import the CSS file for styling
+import React, { useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
+import "./HowToPlay.css";
+import bgmusic from "../../images/bg_music.mp3";
+import buttonclick from "../../images/button_click.mp3";
 
 function HowToPlay() {
+  const bgMusicRef = useRef(null);
+  const buttonClickRef = useRef(null);
+
+  // Play background music when the component mounts
+  useEffect(() => {
+    if (bgMusicRef.current) {
+      bgMusicRef.current.volume = 0.5; // Set volume (adjust as needed)
+      bgMusicRef.current.loop = true; // Loop background music
+      bgMusicRef.current.play().catch((err) => console.log("Audio autoplay blocked", err));
+    }
+  }, []);
+
+  // Function to play button click sound
+  const handleButtonClick = () => {
+    if (buttonClickRef.current) {
+      buttonClickRef.current.play();
+    }
+  };
+
   return (
     <div className="rules-page">
+      {/* Background Music */}
+      <audio ref={bgMusicRef} src={bgmusic} />
+
       {/* Rules Page Container */}
       <div className="rules-container">
         {/* Overlay for content visibility */}
@@ -62,7 +86,8 @@ function HowToPlay() {
           </div>
 
           {/* Back to Home Button */}
-          <Link to="/" className="back-button">
+          <audio ref={buttonClickRef} src={buttonclick} />
+          <Link to="/" className="back-button" onClick={handleButtonClick}>
             Back to Home
           </Link>
         </div>
